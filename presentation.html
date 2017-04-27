@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Computer Modern'; }
+      h1, h2, h3 {
+        font-family: 'Computer Modern';
+        font-weight: bold;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Hasklig'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle, center
+
+# A Brief (and Incomplete) Introduction to Rust for Rubyists
+
+---
+
+```rust
+fn fibonacci(n: u32) -> u32 {
+  match n {
+    0 => 0,
+    1 => 1,
+    _ => fibonacci(n - 1) + fibonacci(n - 2),
+  }
+}
+```
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
