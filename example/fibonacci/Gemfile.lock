@@ -1,0 +1,16 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    fiddle (1.0.0.beta1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  fiddle
+
+RUBY VERSION
+   ruby 2.4.1p111
+
+BUNDLED WITH
+   1.14.6
