@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-std=c11 -Wall -pedantic -g3
-DYLIB=-dynamiclib -undefined suppress -flat_namespace
+DYLIB=-dynamiclib
 PERF=-pg
 PROD=-O2
 NAME=fibonacci
