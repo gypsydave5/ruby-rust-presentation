@@ -4,16 +4,23 @@
     <title>Title</title>
     <meta charset="utf-8">
     <style>
-      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
-      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,800');
       @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
 
-      body { font-family: 'Computer Modern'; }
+      body { font-family: 'Fira Sans'; }
       h1, h2, h3 {
-        font-family: 'Computer Modern';
+        font-family: 'Fira Sans';
         font-weight: bold;
       }
-      .remark-code, .remark-inline-code { font-family: 'Hasklig'; }
+      .remark-code, .remark-inline-code { font-family: 'Fira Code','Fira Mono'; }
+
+      .logo { width: 100%; height: auto;}
+      .logo img { width: 100%; height: auto; }
+
+      ul {
+        font-size: 36px;
+      }
+
     </style>
   </head>
   <body>
@@ -21,7 +28,52 @@
 
 class: middle, center
 
-# A Brief (and Incomplete) Introduction to Rust for Rubyists
+# A Brief
+### (and Incomplete)
+# Introduction to Rust
+### (for Rubyists)
+
+---
+
+## About Me
+
+- Makers Academy August 2015
+- Full Stack Developer Mergermarket ~2 years
+- Working with NodeJS, Go and *not enough* Ruby
+
+---
+
+---
+
+class: center
+
+# What is Rust?
+
+--
+
+class: center
+
+# What is Rust?
+
+.middle[## "Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety."]
+
+---
+
+##History
+
+- Started in 2006
+- Mozilla sponsors in 2009
+- Pre-alpha compiler released in 2012
+- Rust 1.0: 2015
+- Currently at 1.17
+
+---
+
+### What the hell does that mean and why do I care?
+
+---
+
+
 
 ---
 
@@ -36,10 +88,12 @@ fn fibonacci(n: u32) -> u32 {
 ```
 
     </textarea>
-    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
-    </script>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
     <script>
-      var slideshow = remark.create();
+      var slideshow = remark.create({
+        highlightStyle: 'monokai',
+        highlightLines: true
+      });
     </script>
   </body>
 </html>
