@@ -28,9 +28,17 @@ c_fibonacci = Fiddle::Function.new(
   Fiddle::TYPE_INT
 )
 
-n=2000
+go_fibonacci_library = Fiddle.dlopen('./fibonacci_go/fibonacci.so')
+go_fibonacci = Fiddle::Function.new(
+  go_fibonacci_library['fibonacci'],
+  [Fiddle::TYPE_INT],
+  Fiddle::TYPE_INT
+)
+
+n=1000
 Benchmark.bmbm(10) do |x|
   x.report("ruby") { n.times{ ruby_fibonacci(n) }}
   x.report("c") { n.times{ c_fibonacci.call(n) }}
+  x.report("go") { n.times{ go_fibonacci.call(n) }}
   x.report("rust") { n.times{ rust_fibonacci.call(n) }}
 end
