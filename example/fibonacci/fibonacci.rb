@@ -14,7 +14,6 @@ def ruby_fibonacci(number)
     b
 end
 
-
 rust_fibonacci_library = Fiddle.dlopen('./fibonacci_rust/target/release/libfibonacci.dylib')
 rust_fibonacci = Fiddle::Function.new(
   rust_fibonacci_library['fibonacci'],
@@ -28,10 +27,6 @@ c_fibonacci = Fiddle::Function.new(
   [Fiddle::TYPE_INT],
   Fiddle::TYPE_INT
 )
-
-10.times().each{|n| puts "Fibonacci #{n} is #{ruby_fibonacci(n)}"}
-10.times().each{|n| puts "Fibonacci #{n} is #{c_fibonacci.call(n)}"}
-10.times().each{|n| puts "Fibonacci #{n} is #{rust_fibonacci.call(n)}"}
 
 n=2000
 Benchmark.bmbm(10) do |x|
