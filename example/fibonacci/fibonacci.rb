@@ -28,7 +28,7 @@ c_fibonacci = Fiddle::Function.new(
   Fiddle::TYPE_INT
 )
 
-go_fibonacci_library = Fiddle.dlopen('./fibonacci_go/fibonacci.so')
+go_fibonacci_library = Fiddle.dlopen('./fibonacci_go/fibonacci.dylib')
 go_fibonacci = Fiddle::Function.new(
   go_fibonacci_library['fibonacci'],
   [Fiddle::TYPE_INT],
