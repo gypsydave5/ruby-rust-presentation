@@ -13,7 +13,7 @@ func fibonacci(number int) int {
 		b = a + tmp
 	}
 
-	return b
+	return a
 }
 
 func main() {}

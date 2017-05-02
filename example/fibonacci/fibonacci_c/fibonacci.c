@@ -8,5 +8,5 @@ int fibonacci(int number) {
     b = a + tmp;
   }
 
-  return b;
+  return a;
 }

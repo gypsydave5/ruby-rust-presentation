@@ -11,7 +11,7 @@ def ruby_fibonacci(number)
         b = a + tmp
     end
 
-    b
+    a
 end
 
 rust_fibonacci_library = Fiddle.dlopen('./fibonacci_rust/target/release/libfibonacci.dylib')

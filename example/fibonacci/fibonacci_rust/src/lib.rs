@@ -9,7 +9,7 @@ pub extern "C" fn fibonacci(number: u32) -> u32 {
         b = a + tmp;
     }
 
-    b
+    a
 }
 
 
