@@ -1,0 +1,6 @@
+[package]
+name = "rust_fib_stream"
+version = "0.1.0"
+authors = ["David Wickes <dave.wickes@gmail.com>"]
+
+[dependencies]
