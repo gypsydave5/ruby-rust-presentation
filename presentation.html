@@ -83,36 +83,82 @@ class: center
 - New version every 6 weeks
 
 ---
+### So... from Ruby...
+
+```ruby
+def say_hello_world
+  hello_world = "Hello, world!"
+  puts "Today I'd like to say: #{hello_world}"
+end
+
+hello_world
+```
+--
+### ... to Rust.
+```rust
+fn say_hello_world() {
+  let hello_world = "Hello, world!";
+  println!("Today I'd like to say: {}", hello_world);
+}
+
+fn main() {
+  say_hello_world();
+}
+```
+---
 
 ##What's the same as Ruby?
 
 --
+- C-like `{}` (sorry, no `do/end`)
+--
 
-- C-like syntax ('curly braces')
-- There are functions (`def` is spelled `fn`)
+- There are functions (`def` is `fn`)
+--
 
+- `snake_case` variables
 ---
 
 ##What's different to Ruby?
-#### (but maybe I've seen it somewhere else)
+--
+
+### (but maybe you've seen it somewhere else)
+--
 
 - Compiled (Java, C, C++, Go, Haskell, ...)
-- Strongly typed (Java, C, C++, Go, ...)
-- Pointers / Reference types (C, C++, Go)
-- Module system (NodeJS)
-- No garbage collector (C, C++)
+--
 
+- Strongly typed (Java, C, C++, Go, ...)
+--
+
+- Pointers / Reference types (C, C++, Go)
+--
+
+- Module system (NodeJS)
+--
+
+- No garbage collector (C, C++)
+--
+
+- `main()` entry point (C, C++, Go, Java)
 ---
 
 ##What's different to Ruby?
-#### (but maybe I've seen it somewhere else)
+### (but maybe you've seen it somewhere else)
 
 - Traits (like typeclasses in Haskell, Scala)
-- Not 'classically' Object Oriented (C, Go)
-- Methods defined on structs (Go)
-- Pattern matching (Haskell, Elixir)
-- No `null` type (Haskell)
+--
 
+- Not 'classically' Object Oriented (C, Go)
+--
+
+- Methods defined on structs (Go)
+--
+
+- Pattern matching (Haskell, Elixir)
+--
+
+- No `null` type (Haskell)
 ---
 
 ##What's different to _EVERYTHING_
@@ -138,9 +184,8 @@ class: center, middle
 ---
 class: center
 .center-image[ ![C](https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/The_C_Programming_Language_logo.svg/1200px-The_C_Programming_Language_logo.svg.png) ]
-
----mm
-CLASS:m center, middle
+---
+class: center, middle
 #"Let there be STACK and HEAP Memory!"
 ---
 ### THE STACK
@@ -200,7 +245,7 @@ end
 *sandwich = get_me_a_sandwich 5 #The very same sandwich
 ```
 EVERYTHING in Ruby is a reference to something on the Heap
-(but everythig 'happens' on the Stack)
+(but everything 'happens' on the Stack)
 
 ---
 class: center
@@ -214,14 +259,96 @@ def make_lots_of_sandwiches_but_only_give_me_one
   lots = 1_000_000
 
   lots.times do
+    Sandwich.new 5
+  end
+
+  Sandwich.new 6
+end
+```
+Let's make a million sandwiches!
+---
+# But ...
+```ruby
+def make_lots_of_sandwiches_but_only_give_me_one
+  lots = 1_000_000
+
+  lots.times do
+*   Sandwich.new 5 #Many sandwiches go on the heap
+  end
+
+  Sandwich.new 6
+end
+```
+---
+# But ...
+```ruby
+def make_lots_of_sandwiches_but_only_give_me_one
+  lots = 1_000_000
+
+  lots.times do
     Sandwich.new 5 #Many sandwiches go on the heap
   end
 
-  Sandwich.new 6 #We only use one
+* Sandwich.new 6 #We only use one
 end
 ```
+---
+class: center, middle
+#Q: What happens to the heap of one million sandwiches?
+---
+class: center
+#A: GARBAGE COLLECTOR
+![garbage collector](http://p.fod4.com/p/media/1d46854405/riBbiE0kRAi8bMgHlp1K_Freakout.gif)
+---
+class: center, middle
+#Is there an alternative?
+---
+## Manual Memory Management (in C)
+```c
+  int *number;
+  number = (int *)malloc(sizeof(int));
+  *number = 55;
+  free(number);
+```
+---
+## Manual Memory Management (in C)
+```c
+  int *number;
+* number = (int *)malloc(sizeof(int));
+  *number = 55;
+  free(number);
+```
+We make a bit of space on the heap just big enough to put an `int` in.
+---
+## Manual Memory Management (in C)
+```c
+  int *number;
+  number = (int *)malloc(sizeof(int));
+* *number = 55;
+  free(number);
+```
+We put an `int` in it.
+---
+## Manual Memory Management (in C)
+```c
+  int *number;
+  number = (int *)malloc(sizeof(int));
+  *number = 55;
+* free(number);
+```
+We free up that bit of memory - tidy up after ourselves, doing the job of the GC
+---
+#Q: So why not manually manage memory?
+--
 
-... what happens to those million other sandwiches?
+#A: Memory Leaks
+---
+## Garbage collector
+  - \++ Safer, no need for humans to free memory.
+  - \-- Slower, more of an overhead.
+## Manual memory management
+  - \++ Faster, no process time spent on checking to see if it can free memory.
+  - \-- Prone to human incompetence.
 ---
 
 ---
