@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <style>
       @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,800');
-      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      @import url('https://fonts.googleapis.com/css?family=Fira+Mono');
 
       body { font-family: 'Fira Sans'; }
       h1, h2, h3 {
@@ -14,16 +14,26 @@
       }
       .remark-code, .remark-inline-code { font-family: 'Fira Code','Fira Mono'; }
 
-      .logo { width: 100%; height: auto;}
-      .logo img { width: 100%; height: auto; }
+      .logo { display: block; width: 100%; height: auto;}
+      img {max-width: 100%; max-height: 100%; display: block; margin: 0 auto;}
+      .center-image { width: 100%; height: 550px; display: block }
 
       ul {
-        font-size: 36px;
+        font-size: 32px;
       }
 
       .quiet {
         font-size: 50%
       }
+
+      code {
+        color: white;
+        background-color: black;
+        display: inline-block;
+        border-radius: 5px;
+        padding: 0 5px;
+      }
+
 
     </style>
   </head>
@@ -69,29 +79,161 @@ class: center
 - Mozilla sponsors in 2009
 - Pre-alpha compiler released in 2012
 - Rust 1.0: 2015
-- Currently at 1.17
+- Currently at 1.17.0
+- New version every 6 weeks
 
 ---
 
-##What's the same as Ruby
+##What's the same as Ruby?
+
+--
+
+- C-like syntax ('curly braces')
+- There are functions (`def` is spelled `fn`)
 
 ---
 
 ##What's different to Ruby?
 #### (but maybe I've seen it somewhere else)
 
---
-
-- Strongly typed (like Java, C, C++, Go)
-- Compiled (also like Java, C, C++, Go, Haskell, etc)
-- No garbage collector (like C, C++)
-- No classes - traits (like TypeClass in Haskell)
-- Methods defined on structs (like Go)
-- Pattern matching (like Haskell, Elixir)
--
-
+- Compiled (Java, C, C++, Go, Haskell, ...)
+- Strongly typed (Java, C, C++, Go, ...)
+- Pointers / Reference types (C, C++, Go)
+- Module system (NodeJS)
+- No garbage collector (C, C++)
 
 ---
+
+##What's different to Ruby?
+#### (but maybe I've seen it somewhere else)
+
+- Traits (like typeclasses in Haskell, Scala)
+- Not 'classically' Object Oriented (C, Go)
+- Methods defined on structs (Go)
+- Pattern matching (Haskell, Elixir)
+- No `null` type (Haskell)
+
+---
+
+##What's different to _EVERYTHING_
+
+- Ownership
+- Lifetime annotations
+
+---
+class: center
+#1. No Garbage Collector
+---
+class: center
+## What is a garbage collector?
+---
+class: center, middle
+# In the beginning...
+
+(a mass of undifferentiated memory locations)
+
+---
+class: center, middle
+#THEN -
+---
+class: center
+.center-image[ ![C](https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/The_C_Programming_Language_logo.svg/1200px-The_C_Programming_Language_logo.svg.png) ]
+
+---mm
+CLASS:m center, middle
+#"Let there be STACK and HEAP Memory!"
+---
+### THE STACK
+The memory your program is running in
+
+(it's like a scratch pad or a working area)
+### THE HEAP
+The memory your program keeps long term data in
+
+(it's like a massive... heap of things)
+
+---
+# Ruby puts things on the heap
+
+```ruby
+def get_me_a_sandwich size
+  size += 1
+  Sandwich.new size
+end
+
+sandwich = get_me_a_sandwich 5
+```
+Sandwich making function!
+---
+# Ruby puts things on the heap
+
+```ruby
+def get_me_a_sandwich size
+  size += 1
+* Sandwich.new size #The sandwich goes on the heap
+end
+
+sandwich = get_me_a_sandwich 5
+```
+The sandwich goes on the heap
+---
+# Ruby puts things on the heap
+
+```ruby
+def get_me_a_sandwich size
+  size += 1
+  Sandwich.new size #The sandwich goes on the heap
+end
+
+*sandwich = get_me_a_sandwich 5 #The very same sandwich
+```
+The sandwich is handed over - a reference to the sandwich on the heap.
+---
+# Ruby puts things on the heap
+
+```ruby
+def get_me_a_sandwich size
+  size += 1
+  Sandwich.new size #The sandwich goes on the heap
+end
+
+*sandwich = get_me_a_sandwich 5 #The very same sandwich
+```
+EVERYTHING in Ruby is a reference to something on the Heap
+(but everythig 'happens' on the Stack)
+
+---
+class: center
+# This is a MASSIVE simplification
+
+(but we're talking about Rust, not Memory Management in Ruby)
+---
+# But ...
+```ruby
+def make_lots_of_sandwiches_but_only_give_me_one
+  lots = 1_000_000
+
+  lots.times do
+    Sandwich.new 5 #Many sandwiches go on the heap
+  end
+
+  Sandwich.new 6 #We only use one
+end
+```
+
+... what happens to those million other sandwiches?
+---
+
+---
+class: center
+#2. No `null` type
+---
+
+---
+class: center
+#3. Using Rust in your Ruby
+---
+
 
 ```rust
 fn fibonacci(n: u32) -> u32 {
