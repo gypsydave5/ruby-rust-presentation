@@ -34,6 +34,8 @@
         padding: 0 5px;
       }
 
+      .green { color: green; }
+      .red { color: red; }
 
     </style>
   </head>
@@ -116,7 +118,7 @@ fn main() {
 - There are functions (`def` is `fn`)
 --
 
-- `snake_case` variables
+- `snake_case` variables / function names
 ---
 
 ##What's different to Ruby?
@@ -161,10 +163,11 @@ fn main() {
 - No `null` type (Haskell)
 ---
 
-##What's different to _EVERYTHING_
+##What's unique to Rust?
 
-- Ownership
-- Lifetime annotations
+---
+class: center, middle
+#OWNERSHIP
 
 ---
 class: center
@@ -255,7 +258,7 @@ class: center
 ---
 # But ...
 ```ruby
-def make_lots_of_sandwiches_but_only_give_me_one
+def make_a_million_sandwiches_but_only_give_me_one
   lots = 1_000_000
 
   lots.times do
@@ -269,7 +272,7 @@ Let's make a million sandwiches!
 ---
 # But ...
 ```ruby
-def make_lots_of_sandwiches_but_only_give_me_one
+def make_a_million_sandwiches_but_only_give_me_one
   lots = 1_000_000
 
   lots.times do
@@ -279,10 +282,11 @@ def make_lots_of_sandwiches_but_only_give_me_one
   Sandwich.new 6
 end
 ```
+Many sandwiches go on the heap
 ---
 # But ...
 ```ruby
-def make_lots_of_sandwiches_but_only_give_me_one
+def make_a_million_sandwiches_but_only_give_me_one
   lots = 1_000_000
 
   lots.times do
@@ -292,6 +296,7 @@ def make_lots_of_sandwiches_but_only_give_me_one
 * Sandwich.new 6 #We only use one
 end
 ```
+But we use only one of them
 ---
 class: center, middle
 #Q: What happens to the heap of one million sandwiches?
@@ -299,6 +304,9 @@ class: center, middle
 class: center
 #A: GARBAGE COLLECTOR
 ![garbage collector](http://p.fod4.com/p/media/1d46854405/riBbiE0kRAi8bMgHlp1K_Freakout.gif)
+
+a process in the background that runs around tidying up after your program,
+working out which bits of memory you don't need anymore.
 ---
 class: center, middle
 #Is there an alternative?
@@ -344,11 +352,12 @@ We free up that bit of memory - tidy up after ourselves, doing the job of the GC
 #A: Memory Leaks
 ---
 ## Garbage collector
-  - \++ Safer, no need for humans to free memory.
-  - \-- Slower, more of an overhead.
+  - .green[\++] Safer, no need for humans to free memory.
+  - .red[\--] Slower, more of an overhead.
+
 ## Manual memory management
-  - \++ Faster, no process time spent on checking to see if it can free memory.
-  - \-- Prone to human incompetence.
+  - .green[\++] Faster, no time spent on freeing memory.
+  - .red[\--] Prone to human incompetence.
 ---
 
 ---
