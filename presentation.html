@@ -57,7 +57,7 @@ class: middle, center
 - Full Stack Developer Mergermarket ~2 years
 - Working with NodeJS, Go and *not enough* Ruby
 - Bit of a functional programming nut<br> .quiet[(but I don't bite)]
-- Love learning new languages
+- Addicted to learning new languages
 
 ---
 
@@ -72,6 +72,19 @@ class: center
 ---
 
 ![what does that mean?](https://media.giphy.com/media/pdQB12mDIHpeM/giphy.gif)
+
+---
+# Goals of Rust
+
+- Memory safety without garbage collection
+- Concurrency without data races
+- Abstraction without overhead
+
+
+---
+# Slogan
+
+.middle[## "fast. reliable. productive. pick three"]
 
 ---
 
@@ -119,6 +132,9 @@ fn main() {
 --
 
 - `snake_case` variables / function names
+--
+
+- `PascalCase` for modules / classes / types
 ---
 
 ##What's different to Ruby?
@@ -306,10 +322,18 @@ class: center
 ![garbage collector](http://p.fod4.com/p/media/1d46854405/riBbiE0kRAi8bMgHlp1K_Freakout.gif)
 
 a process in the background that runs around tidying up after your program,
-working out which bits of memory you don't need anymore.
+working out which bits of heap memory you don't need anymore.
 ---
 class: center, middle
-#Is there an alternative?
+#Q: Is there an alternative?
+
+---
+
+class: center, middle
+#A: DO IT YOURSELF!
+
+(like the good old days in C)
+
 ---
 ## Manual Memory Management (in C)
 ```c
@@ -322,20 +346,20 @@ class: center, middle
 ## Manual Memory Management (in C)
 ```c
   int *number;
-* number = (int *)malloc(sizeof(int));
+* number = (int *)malloc(sizeof(int)); // makes space on the heap for a number
   *number = 55;
   free(number);
 ```
-We make a bit of space on the heap just big enough to put an `int` in.
+We make a bit of space on the heap just big enough to put a number in.
 ---
 ## Manual Memory Management (in C)
 ```c
   int *number;
-  number = (int *)malloc(sizeof(int));
+  number = (int *)malloc(sizeof(int)); // makes space on the heap for a number
 * *number = 55;
   free(number);
 ```
-We put an `int` in it.
+We put a number in there.
 ---
 ## Manual Memory Management (in C)
 ```c
@@ -346,10 +370,12 @@ We put an `int` in it.
 ```
 We free up that bit of memory - tidy up after ourselves, doing the job of the GC
 ---
-#Q: So why not manually manage memory?
+#Q: What happens if we forget to free up the memory?
 --
 
 #A: Memory Leaks
+
+![leak]( https://media.giphy.com/media/3o6Mbf0fbXwLFrbefK/giphy.gif)
 ---
 ## Garbage collector
   - .green[\++] Safer, no need for humans to free memory.
