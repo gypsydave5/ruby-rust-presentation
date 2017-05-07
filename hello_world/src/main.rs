@@ -2,6 +2,7 @@ use std::io::{ Write, Read };
 
 fn main() {
     let a_vector = gimmee_a_vector();
+    write_vector(a_vector, &mut std::io::stdout()).unwrap();
 }
 
 fn gimmee_a_vector() -> Vec<i32> {
