@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,800');
+      @import url('https://fonts.googleapis.com/css?family=Fira+Mono');
+
+      body { font-family: 'Fira Sans'; }
+      h1, h2, h3 {
+        font-family: 'Fira Sans';
+        font-weight: bold;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Fira Code','Fira Mono'; }
+
+      .logo { display: block; width: 100%; height: auto;}
+      img {max-width: 100%; max-height: 100%; display: block; margin: 0 auto;}
+      .center-image { width: 100%; height: 550px; display: block }
+
+      ul {
+        font-size: 32px;
+      }
+
+      ol {
+        font-size: 48px;
+      }
+
+      .quiet {
+        font-size: 50%
+      }
+
+      code {
+        color: white;
+        background-color: black;
+        display: inline-block;
+        border-radius: 5px;
+        padding: 0 5px;
+        margin: 2px 0;
+      }
+
+      .remark-code {
+        font-size: 24px !important;
+      }
+
+      .code-notes ul {
+        font-size: 28px;
+      }
+
+      .green { color: green; }
+      .red { color: red; }
+
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle, center
+
+# A Brief
+### (and Incomplete)
+# Introduction to Rust
+### (for Rubyists)
+
+---
+
+???
+So I'd like to talk about Rust, which is a language I've been looking at
+semi-seriously over the last six months. I'm not really sure about the best way
+of doing this.
+---
+
+## About Me
+
+- Makers Academy August 2015
+- Full Stack Developer Mergermarket ~2 years
+- Working with NodeJS, Go and *not enough* Ruby
+- Bit of a functional programming nut<br> .quiet[(but I don't bite)]
+- Addicted to learning new languages
+
+---
+
+1. Getting going with Rust.
+2. Why we fight (with the borrow checker).
+3. Hey! You put Rust in my Ruby!
+
+---
+
+class: center
+
+# What is Rust?
+
+--
+
+.middle[## "Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety."]
+
+---
+
+![what does that mean?](https://media.giphy.com/media/pdQB12mDIHpeM/giphy.gif)
+
+---
+# 'Pillars' of Rust
+
+- Memory safety without garbage collection
+- Concurrency without data races
+- Abstraction without overhead
+
+---
+# Slogan
+
+.middle[## Rust:</br>fast,</br>reliable,</br>productive</br>—pick three]
+
+---
+
+##History
+
+- Started in 2006
+- Mozilla sponsors in 2009
+- Pre-alpha compiler released in 2012
+- Rust 1.0: 2015
+- Currently at 1.17.0
+- New version every 6 weeks
+
+---
+class: center, middle
+
+# Installing Rust
+
+```bash
+curl https://sh.rustup.rs -sSf | sh
+
+```
+
+(yes it's that easy)
+
+???
+So let's get into it - installing Rust
+
+---
+class: center, middle
+
+# Starting a new project
+
+```bash
+cargo new --bin hello_world
+```
+
+`cargo` is Rust's magic do-everything tool. Think `bundler` with knobs on.
+
+???
+---
+class: center, middle
+
+# Running the tests
+
+```bash
+cargo test
+```
+(built in from the get go)
+
+---
+class: center, middle
+
+# Building the executable
+
+```bash
+cargo build
+```
+(it's a compiled language - so we compile it)
+
+---
+class: center, middle
+
+# Running the program
+
+```bash
+cargo run
+```
+(it's _that_ easy)
+
+---
+`hello_world/src/main.rs`
+
+.code-middle[
+```rust
+fn main() {
+    println!("Hello, world!");
+}
+```
+]
+---
+`hello_world/src/main.rs`
+
+.code-middle[
+```rust
+*fn main() {
+    println!("Hello, world!");
+}
+```
+]
+- `def` is spelled `fn` in Rust.
+- executable programs start with a `main` function.
+- function bodies are in `{}`
+---
+`hello_world/src/main.rs`
+
+.code-middle[
+```rust
+fn main() {
+*   println!("Hello, world!");
+}
+```
+]
+
+- `println!` prints a line - that's easy!
+- the `!` means that `println!` is a macro.
+
+(don't worry about macros)
+
+---
+class: center, middle
+#Let's write a test!
+
+???
+My least favourite thing about most tutorials is that they usually show you how
+to write a test a good twenty examples after you've wanted to write a test. So
+let's write a test right now.
+
+---
+`hello_world/src/main.rs`
+
+```rust
+fn main() {
+     println!("Hello, world!");
+}
+
+#[test]
+fn test_gimmee_a_vector() {
+    assert_eq!(gimmee_a_vector(), vec![1, 2])
+}
+```
+- We can write tests in the same file as the code under test. Cool!
+
+(there is some nuance to this)
+---
+`hello_world/src/main.rs`
+
+```rust
+fn main() {
+     println!("Hello, world!");
+}
+
+*#[test]
+fn test_gimmee_a_vector() {
+    assert_eq!(gimmee_a_vector(), vec![1, 2])
+}
+```
+
+- This is an annotation. Here it gives the a function the `test` attribute.
+
+(It's what makes it a test. Don't worry about it too much)
+
+---
+`hello_world/src/main.rs`
+
+```rust
+fn main() {
+     println!("Hello, world!");
+}
+
+#[test]
+*fn test_gimmee_a_vector() {
+    assert_eq!(gimmee_a_vector(), vec![1, 2])
+}
+```
+
+- The function name is the name of a test
+- a vector (`Vec`) is like an `array` in Ruby
+---
+`hello_world/src/main.rs`
+
+```rust
+fn main() {
+     println!("Hello, world!");
+}
+
+#[test]
+fn test_gimmee_a_vector() {
+*   assert_eq!(gimmee_a_vector(), vec![1, 2])
+}
+```
+
+- This macro is an assertion. `assert_eq!` panics* Rust if the two arguments are not equal.
+
+There's also an `assert!` macro that does the same if it's single argument is false.
+
+*'panic' is Rustacean for 'throwing an error'.
+---
+`hello_world/src/main.rs`
+
+```rust
+fn main() {
+     println!("Hello, world!");
+}
+
+#[test]
+fn test_gimmee_a_vector() {
+*   assert_eq!(gimmee_a_vector(), vec![1, 2])
+}
+```
+
+- `vec![1, 2]` is another macro that builds a `Vec` with two elements, `1` and `2`.
+- It's like an array literal in Ruby - `[1, 2]`
+
+(arrays in Rust are more like arrays in C. Don't worry about this now)
+---
+class: center, middle
+#Let's pass the test!
+---
+`hello_world/src/main.rs`
+
+```rust
+// ... the main function
+fn gimmee_a_vector() -> Vec<i32> {
+    let mut my_vector = Vec::new();
+    my_vector.push(1);
+    my_vector.push(2);
+    my_vector
+}
+// ... the test
+```
+---
+`hello_world/src/main.rs`
+
+```rust
+*// ... the main function
+fn gimmee_a_vector() -> Vec<i32> {
+    let mut my_vector = Vec::new();
+    my_vector.push(1);
+    my_vector.push(2);
+    my_vector
+}
+// ... the test
+```
+
+- Comments start with `//`
+---
+`hello_world/src/main.rs`
+
+```rust
+// ... the main function
+*fn gimmee_a_vector() -> Vec<i32> {
+    let mut my_vector = Vec::new();
+    my_vector.push(1);
+    my_vector.push(2);
+    my_vector
+}
+// ... the test
+```
+
+- Return type after the `->`
+- `Vec<i32>` - a vector of `i32`s - 32 bit integers.
+---
+`hello_world/src/main.rs`
+
+```rust
+// ... the main function
+fn gimmee_a_vector() -> Vec<i32> {
+*   let mut my_vector = Vec::new();
+    my_vector.push(1);
+    my_vector.push(2);
+    my_vector
+}
+// ... the test
+```
+
+- `::` accesses functions in a module.
+- The `new()` function from the `Vec` module makes a new vector.
+- `let` declares a variable - think `var` in JavaScript.
+- `let mut` declares a variable that can be mutated.
+---
+`hello_world/src/main.rs`
+
+```rust
+// ... the main function
+fn gimmee_a_vector() -> Vec<i32> {
+    let mut my_vector = Vec::new();
+*   my_vector.push(1);
+*   my_vector.push(2);
+    my_vector
+}
+// ... the test
+```
+
+- We use dot notation to `push()` elements into the ~array~ vector.
+---
+`hello_world/src/main.rs`
+
+```rust
+// ... the main function
+fn gimmee_a_vector() -> Vec<i32> {
+    let mut my_vector = Vec::new();
+    my_vector.push(1);
+    my_vector.push(2);
+*   my_vector
+}
+// ... the test
+```
+
+- When a line does not end in a semi-colon, it is what the block (`{}`) evaluates
+to.
+- Here, the return value of the function.
+---
+class: center, middle
+#Let's print out our vector
+---
+
+---
+
+
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+    <script>
+      var slideshow = remark.create({
+        highlightStyle: 'monokai',
+        highlightLines: true
+      });
+    </script>
+  </body>
+</html>

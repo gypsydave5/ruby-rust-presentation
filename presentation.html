@@ -22,6 +22,10 @@
         font-size: 32px;
       }
 
+      ol {
+        font-size: 48px;
+      }
+
       .quiet {
         font-size: 50%
       }
@@ -32,6 +36,7 @@
         display: inline-block;
         border-radius: 5px;
         padding: 0 5px;
+        margin: 2px 0;
       }
 
       .green { color: green; }
@@ -84,7 +89,7 @@ class: center
 ---
 # Slogan
 
-.middle[## "fast. reliable. productive. pick three"]
+.middle[## Rust:</br>fast,</br>reliable,</br>productive</br>—pick three]
 
 ---
 
@@ -146,13 +151,13 @@ fn main() {
 - Compiled (Java, C, C++, Go, Haskell, ...)
 --
 
-- Strongly typed (Java, C, C++, Go, ...)
+- Strongly typed (but lots of type inference)
 --
 
 - Pointers / Reference types (C, C++, Go)
 --
 
-- Module system (NodeJS)
+- Module system (a lot like NodeJS)
 --
 
 - No garbage collector (C, C++)
@@ -185,6 +190,19 @@ fn main() {
 class: center, middle
 #OWNERSHIP
 
+--
+(OK, kinda like C++)
+
+---
+#Q: What does ownership buy us?
+
+--
+
+1. No garbage collector
+--
+
+2. Built in concurrency model
+
 ---
 class: center
 #1. No Garbage Collector
@@ -210,11 +228,11 @@ class: center, middle
 ### THE STACK
 The memory your program is running in
 
-(it's like a scratch pad or a working area)
+(it's like a scratch pad or a working area.)
 ### THE HEAP
 The memory your program keeps long term data in
 
-(it's like a massive... heap of things)
+(it's like a massive... heap of things. In memory.)
 
 ---
 # Ruby puts things on the heap
@@ -385,6 +403,17 @@ We free up that bit of memory - tidy up after ourselves, doing the job of the GC
   - .green[\++] Faster, no time spent on freeing memory.
   - .red[\--] Prone to human incompetence.
 ---
+# Ownership == Third way
+---
+
+```rust
+fn main() {
+  let x = Vec::new();
+  let y = x;
+
+
+}
+```
 
 ---
 class: center
