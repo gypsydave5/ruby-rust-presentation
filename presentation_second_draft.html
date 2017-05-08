@@ -40,7 +40,7 @@
       }
 
       .remark-code {
-        font-size: 24px !important;
+        font-size: 22px !important;
       }
 
       .code-notes ul {
@@ -62,15 +62,13 @@ class: middle, center
 # Introduction to Rust
 ### (for Rubyists)
 
----
-
 ???
 So I'd like to talk about Rust, which is a language I've been looking at
 semi-seriously over the last six months. I'm not really sure about the best way
 of doing this.
 ---
 
-## About Me
+## About Me (@gypsydave5)
 
 - Makers Academy August 2015
 - Full Stack Developer Mergermarket ~2 years
@@ -78,19 +76,35 @@ of doing this.
 - Bit of a functional programming nut<br> .quiet[(but I don't bite)]
 - Addicted to learning new languages
 
----
-
-1. Getting going with Rust.
-2. Why we fight (with the borrow checker).
-3. Hey! You put Rust in my Ruby!
+???
+In fact, strongly believe that learning other languages helps learn all languages
+"Travel broadens the mind"
 
 ---
 
-class: center
+1. Getting going with Rust
+2. What Ownership Get Us
+3. Putting Rust into Ruby
+
+---
+
+class: center, middle
 
 # What is Rust?
 
---
+---
+
+##History
+
+- Started in 2006
+- Mozilla sponsors in 2009
+- Pre-alpha compiler released in 2012
+- Rust 1.0: 2015
+- Currently at 1.17.0
+- New version every 6 weeks
+
+---
+# From the website
 
 .middle[## "Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety."]
 
@@ -106,20 +120,24 @@ class: center
 - Abstraction without overhead
 
 ---
+
+![what does that mean?](https://media.giphy.com/media/pdQB12mDIHpeM/giphy.gif)
+
+---
 # Slogan
 
-.middle[## Rust:</br>fast,</br>reliable,</br>productive</br>—pick three]
+.middle[# "Rust: fast, reliable, productive — pick three"]
 
 ---
 
-##History
+![what does that mean?](https://media.giphy.com/media/pdQB12mDIHpeM/giphy.gif)
 
-- Started in 2006
-- Mozilla sponsors in 2009
-- Pre-alpha compiler released in 2012
-- Rust 1.0: 2015
-- Currently at 1.17.0
-- New version every 6 weeks
+---
+class: center, middle
+
+## Part I
+
+# Getting Going with Rust
 
 ---
 class: center, middle
@@ -465,6 +483,7 @@ error[E0382]: use of moved value: `a_vector`
   |                  ^^^^^^^^ value used here after move
   |
   = note: move occurs because `a_vector` has type `std::vec::Vec<i32>`, which does not implement the `Copy` trait
+```
 ---
 class: center, middle
 # Ownership
@@ -524,6 +543,8 @@ fn print_vector(vector : Vec<i32>) -> Vec<i32> {
 }
 ```
 - We can explicitly return with `return`.
+???
+Return will explicitly return from a function
 ---
 `hello_world/src/main.rs`
 
@@ -537,9 +558,592 @@ fn main() {
 - It's fine to redeclare a variable in Rust.
 ---
 
+# This could get messy
+
+```rust
+fn sum_three(a : u32, b : u32, c : u32) -> (u32, u32, u32, u32) {
+  let answer = a + b + c;
+  return (answer, a, b, c);
+}
+
+fn main() {
+  let a = 1;
+  let b = 2;
+  let c = 3;
+
+  let (answer, a, b, c)  = sum_three(a, b, c);
+  println!("{} + {} + {} = {}", a, b, c, answer);
+}
 
 
+```
+[link](https://is.gd/CYVGAZ)
 
+???
+- If we keep passing around ownership, things will look _horrible_.
+- We don't want to own them, we just want to borrow them - get 'a reference'
+---
+class: center, middle
+
+# Borrowing
+
+(or 'referencing')
+
+???
+
+Rewrite print_vector to use references
+
+---
+
+# Two types of borrowing:
+
+- Immutable `&T`
+- Immutable `&mut T`
+
+---
+# The rules of borrowing
+
+- As many immutable borrows (`&T`) as you like at any time
+--
+
+- *OR*
+--
+
+- *ONE* mutable borrow (`&mut T`) at any time
+---
+# Fine, but...
+
+![WHY](https://media.giphy.com/media/cPKWZB2aaB3rO/giphy.gif)
+
+---
+
+class: center, middle
+
+## Part II
+
+# What Ownership Gets Us
+
+---
+#Q: What does ownership buy us?
+
+--
+1. No garbage collector
+
+--
+2. Built in concurrency model
+
+---
+
+#1. No Garbage Collector
+
+---
+## What is a garbage collector?
+---
+class: center, middle
+
+# In the beginning...
+
+(a mass of undifferentiated memory locations)
+
+---
+class: center, middle
+#THEN -
+---
+class: center
+.center-image[ ![C](https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/The_C_Programming_Language_logo.svg/1200px-The_C_Programming_Language_logo.svg.png) ]
+---
+class: center, middle
+#"Let there be STACK and HEAP Memory!"
+---
+### THE STACK
+The memory your program is running in
+
+(it's like a scratch pad or a working area.)
+### THE HEAP
+The memory your program keeps long term data in
+
+(it's like a massive... heap of things. In memory.)
+
+---
+# Ruby puts things on the heap
+
+```ruby
+def get_me_a_sandwich size
+  size += 1
+  Sandwich.new size
+end
+
+sandwich = get_me_a_sandwich 5
+```
+Sandwich making function!
+---
+# Ruby puts things on the heap
+
+```ruby
+def get_me_a_sandwich size
+  size += 1
+* Sandwich.new size #The sandwich goes on the heap
+end
+
+sandwich = get_me_a_sandwich 5
+```
+The sandwich goes on the heap
+---
+# Ruby puts things on the heap
+
+```ruby
+def get_me_a_sandwich size
+  size += 1
+  Sandwich.new size #The sandwich goes on the heap
+end
+
+*sandwich = get_me_a_sandwich 5 #The very same sandwich
+```
+The sandwich is handed over - a reference to the sandwich on the heap.
+---
+# Ruby puts things on the heap
+
+```ruby
+def get_me_a_sandwich size
+  size += 1
+  Sandwich.new size #The sandwich goes on the heap
+end
+
+*sandwich = get_me_a_sandwich 5 #The very same sandwich
+```
+EVERYTHING in Ruby is a reference to something on the Heap
+(but everything 'happens' on the Stack)
+
+---
+class: center
+# This is a MASSIVE simplification
+
+(but we're talking about Rust, not Memory Management in Ruby)
+---
+# But ...
+```ruby
+def make_a_million_sandwiches_but_only_give_me_one
+  lots = 1_000_000
+
+  lots.times do
+    Sandwich.new 5
+  end
+
+  Sandwich.new 6
+end
+```
+Let's make a million sandwiches!
+---
+# But ...
+```ruby
+def make_a_million_sandwiches_but_only_give_me_one
+  lots = 1_000_000
+
+  lots.times do
+*   Sandwich.new 5 #Many sandwiches go on the heap
+  end
+
+  Sandwich.new 6
+end
+```
+Many sandwiches go on the heap
+---
+# But ...
+```ruby
+def make_a_million_sandwiches_but_only_give_me_one
+  lots = 1_000_000
+
+  lots.times do
+    Sandwich.new 5 #Many sandwiches go on the heap
+  end
+
+* Sandwich.new 6 #We only use one
+end
+```
+But we use only one of them
+---
+class: center, middle
+#Q: What happens to the heap of one million sandwiches?
+---
+class: center
+#A: GARBAGE COLLECTOR
+![garbage collector](http://p.fod4.com/p/media/1d46854405/riBbiE0kRAi8bMgHlp1K_Freakout.gif)
+
+a process in the background that runs around tidying up after your program,
+working out which bits of heap memory you don't need anymore.
+---
+class: center, middle
+#Q: Is there an alternative?
+
+---
+
+class: center, middle
+#A: DO IT YOURSELF!
+
+(like the good old days in C)
+
+---
+## Manual Memory Management (in C)
+```c
+  int *number;
+  number = (int *)malloc(sizeof(int));
+  *number = 55;
+  free(number);
+```
+---
+## Manual Memory Management (in C)
+```c
+  int *number;
+* number = (int *)malloc(sizeof(int)); // makes space on the heap for a number
+  *number = 55;
+  free(number);
+```
+We make a bit of space on the heap just big enough to put a number in.
+---
+## Manual Memory Management (in C)
+```c
+  int *number;
+  number = (int *)malloc(sizeof(int)); // makes space on the heap for a number
+* *number = 55;
+  free(number);
+```
+We put a number in there.
+---
+## Manual Memory Management (in C)
+```c
+  int *number;
+  number = (int *)malloc(sizeof(int));
+  *number = 55;
+* free(number);
+```
+We free up that bit of memory - tidy up after ourselves, doing the job of the GC
+---
+#Q: What happens if we forget to free up the memory?
+--
+
+#A: Memory Leaks
+
+![leak]( https://media.giphy.com/media/3o6Mbf0fbXwLFrbefK/giphy.gif)
+---
+## Garbage collector
+  - .green[\++] Safer, no need for humans to free memory.
+  - .red[\--] Slower, more of an overhead.
+
+## Manual memory management
+  - .green[\++] Faster, no time spent on freeing memory.
+  - .red[\--] Prone to human incompetence.
+---
+# Ownership is a Third way
+
+--
+- every variable has an owner
+
+--
+- when the program leaves the owning scope ...
+
+--
+- ... all the owned variables are freed
+- AUTOMATICALLY
+
+--
+- one rule, cheap to use, easy(ish) to remember
+
+---
+
+```rust
+fn main() {
+  let a = 5;
+    {
+      let b = 10;
+      // b is freed here!
+      // (and cannot be used afterwards)
+    }
+  // a is freed here!
+  // (and cannot be used afterwards)
+}
+```
+
+---
+# So..
+
+- .green[\++] No GC == less overhead == faster code
+- .green[\++] No manual memory management == less bugs
+- .red[\--] Learning how this works == upfront cost
+
+---
+class: center, middle
+
+# Ownership / Borrowing makes Rust fast and safe
+
+(and a pain in the ass sometimes)
+
+---
+## A quick note on concurrency
+
+- Borrowing rules avoid _some_ concurrency issues
+- i.e. prevents access of data for more than one writer
+
+---
+class: center, middle
+
+## Part III
+
+# Putting Rust into Ruby
+
+---
+# Wouldn't it be nice to call Rust from Ruby?
+
+--
+
+# YOU CAN!
+
+---
+
+# FFI (Foreign Function Interface)
+
+##_"A foreign function interface (FFI) is a mechanism by which a program written in one programming language can call routines or make use of services written in another."_
+
+(Thank you [Wikipedia](https://en.wikipedia.org/wiki/Foreign_function_interface))
+
+---
+
+## Goes something like...
+
+--
+1. Write code in a different language
+
+--
+2. Compile it into a shared C library
+
+--
+3. Bring it in to Ruby with a FFI library
+
+(we will use [Fiddle](http://ruby-doc.org/stdlib-2.4.0/libdoc/fiddle/rdoc/Fiddle.html))
+---
+#Fibonacci (Ruby)
+
+```ruby
+def ruby_fibonacci(number)
+    a = 0
+    b = 1
+
+    number.times do
+        tmp = a
+        a = b
+        b = a + tmp
+    end
+
+    a
+end
+```
+---
+#Fibonacci (Rust)
+
+```rust
+#[no_mangle]
+pub extern "C" fn fibonacci(number: u32) -> u32 {
+    let mut a = 0;
+    let mut b = 1;
+
+    for _ in 0..number {
+        let tmp = a;
+        a = b;
+        b = a + tmp;
+    }
+
+    a
+}
+```
+---
+#Fibonacci (Rust)
+
+```rust
+*#[no_mangle]
+pub extern "C" fn fibonacci(number: u32) -> u32 {
+    let mut a = 0;
+    let mut b = 1;
+
+    for _ in 0..number {
+        let tmp = a;
+        a = b;
+        b = a + tmp;
+    }
+
+    a
+}
+```
+
+- `no_mangle` tells Rust not to change the name
+---
+#Fibonacci (Rust)
+
+```rust
+#[no_mangle]
+*pub extern "C" fn fibonacci(number: u32) -> u32 {
+    let mut a = 0;
+    let mut b = 1;
+
+    for _ in 0..number {
+        let tmp = a;
+        a = b;
+        b = a + tmp;
+    }
+
+    a
+}
+```
+
+- `pub` makes it public (i.e. exported)
+- `extern` makes it FFI callable
+- `"C"` makes it look like C
+
+---
+class: center, middle
+
+# Building for release
+
+```bash
+cargo build --release
+```
+
+---
+#Requiring and Running Rust
+
+```ruby
+require 'fiddle'
+
+rust_fibonacci_library = Fiddle.dlopen('./fibonacci_rust/target/release/libfibonacci.dylib')
+rust_fibonacci = Fiddle::Function.new(
+  rust_fibonacci_library['fibonacci'],
+  [Fiddle::TYPE_INT],
+  Fiddle::TYPE_INT
+)
+
+puts rust_fibonacci.call(10)
+```
+
+---
+#Requiring and Running Rust
+
+```ruby
+*require 'fiddle'
+
+rust_fibonacci_library = Fiddle.dlopen('./fibonacci_rust/target/release/libfibonacci.dylib')
+rust_fibonacci = Fiddle::Function.new(
+  rust_fibonacci_library['fibonacci'],
+  [Fiddle::TYPE_INT],
+  Fiddle::TYPE_INT
+)
+
+puts rust_fibonacci.call(10)
+```
+
+- `fiddle` is our FFI library
+
+---
+#Requiring and Running Rust
+
+```ruby
+require 'fiddle'
+
+*rust_fibonacci_library = Fiddle.dlopen('./fibonacci_rust/target/release/libfibonacci.dylib')
+rust_fibonacci = Fiddle::Function.new(
+  rust_fibonacci_library['fibonacci'],
+  [Fiddle::TYPE_INT],
+  Fiddle::TYPE_INT
+)
+
+puts rust_fibonacci.call(10)
+```
+
+- `.dlOpen()` takes the path to the compiled dylib with our function in
+
+(DYnamic LIBrary. Use `.dylib` on Mac - compile and use `.so` on Linux)
+
+---
+#Requiring and Running Rust
+
+```ruby
+require 'fiddle'
+
+rust_fibonacci_library = Fiddle.dlopen('./fibonacci_rust/target/release/libfibonacci.dylib')
+*rust_fibonacci = Fiddle::Function.new(
+* rust_fibonacci_library['fibonacci'],
+* [Fiddle::TYPE_INT],
+* Fiddle::TYPE_INT
+)
+
+puts rust_fibonacci.call(10)
+```
+
+- Declare a new lambda, telling it
+  - function name in the library
+  - argument types (as Array)
+  - return type
+---
+#Requiring and Running Rust
+
+```ruby
+require 'fiddle'
+
+rust_fibonacci_library = Fiddle.dlopen('./fibonacci_rust/target/release/libfibonacci.dylib')
+rust_fibonacci = Fiddle::Function.new(
+  rust_fibonacci_library['fibonacci'],
+  [Fiddle::TYPE_INT],
+  Fiddle::TYPE_INT
+)
+
+*puts rust_fibonacci.call(10)
+```
+
+- Call it!
+---
+class: center, middle
+
+## Let's look at one I made earlier...
+
+---
+
+class: center, middle
+# Summary
+
+--
+
+## This is totally incomplete
+
+---
+# What I've not talked about
+
+--
+- `Struct`s and `impl` - making objects and methods
+
+--
+- Lifetimes - advanced annotation to Borrows
+
+--
+- Modules - how to organize Rust code
+
+--
+- Traits - Rust's extensible interfaces
+
+--
+- Macros
+
+--
+- ... and much, much more.
+
+---
+
+## See also
+
+- Rust in General
+  - [Rust standard library docs](https://doc.rust-lang.org/std/)
+  - [Both _new_ and _old_ Rust Books](https://github.com/rust-lang/book)
+
+- Rust in Ruby
+  - [FFI](https://github.com/ffi/ffi) - a different Ruby FFI library
+  - [Helix](https://usehelix.com/) - opinionated Rust in Rails
+  - [Yehuda Katz rewrites `String#blank?` in Rust](https://engineering.intercom.com/yehuda-on-rust-with-ruby/)
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
