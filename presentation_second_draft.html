@@ -414,8 +414,129 @@ to.
 class: center, middle
 #Let's print out our vector
 ---
+`hello_world/src/main.rs`
+
+```rust
+*fn print_vector(vector : Vec<i32>) {
+    for n in vector {
+        println!("{}", n);
+    }
+}
+```
+- After `:` we write the argument type
+- (it's the same for `let` declarations)
+---
+`hello_world/src/main.rs`
+
+```rust
+fn print_vector(vector : Vec<i32>) {
+*   for n in vector {
+        println!("{}", n);
+    }
+}
+```
+- This is one of the ways we can iterate in Rust
+---
+`hello_world/src/main.rs`
+
+```rust
+fn print_vector(vector : Vec<i32>) {
+    for n in vector {
+*       println!("{}", n);
+    }
+}
+```
+- `{}` is a placeholder in a Rust format string.
+---
+# Let's print it out again!
+
+???
+Now add an extra `print_vector(a_vector)` to the `main()`
+---
+#UH OH!
+---
+```
+error[E0382]: use of moved value: `a_vector`
+ --> src/main.rs:4:18
+  |
+3 |     print_vector(a_vector);
+  |                  -------- value moved here
+4 |     print_vector(a_vector);
+  |                  ^^^^^^^^ value used here after move
+  |
+  = note: move occurs because `a_vector` has type `std::vec::Vec<i32>`, which does not implement the `Copy` trait
+---
+class: center, middle
+# Ownership
+---
+class: middle
+# The Rules Of Ownership:
+--
+
+- Every variable has *ONE* and *ONLY ONE* owner
+--
+
+- When you call a function, you pass ownership
+
+???
+Rustaceans talk about 'consuming' the variable when this happens.
+--
+
+- Hell, when you reassign you pass ownership
+
+???
+Demonstrate reassignment borrow check error
+--
+
+- When the owner dies, so does the variable
+---
+class: center, middle
+# Solutions?
+--
+
+# Could just return the variable...
+???
+- Demonstrate returning the vector from print_vector
+- show we have to use `clone()` because of the move
+- redeclaration (try resassignment) in main
+---
+`hello_world/src/main.rs`
+
+```rust
+fn print_vector(vector : Vec<i32>) -> Vec<i32> {
+*   for n in vector.clone() {
+        println!("{}", n);
+    }
+    return vector;
+}
+```
+- iteration _also_ consumes the vector; `clone()` makes a copy.
 
 ---
+`hello_world/src/main.rs`
+
+```rust
+fn print_vector(vector : Vec<i32>) -> Vec<i32> {
+    for n in vector.clone() {
+        println!("{}", n);
+    }
+*   return vector;
+}
+```
+- We can explicitly return with `return`.
+---
+`hello_world/src/main.rs`
+
+```rust
+fn main() {
+    let a_vector = gimmee_a_vector();
+*   let a_vector = print_vector(a_vector);
+    print_vector(a_vector);
+}
+```
+- It's fine to redeclare a variable in Rust.
+---
+
 
 
 
