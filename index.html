@@ -71,7 +71,7 @@ of doing this.
 ## About Me (@gypsydave5)
 
 - Makers Academy August 2014
-- Full Stack Developer Mergermarket ~2 years
+- Full Stack Developer @Mergermarket ~2 years
 - Working with NodeJS, Go and *not enough* Ruby
 - Bit of a functional programming nut<br> .quiet[(but I don't bite)]
 - Addicted to learning new languages
@@ -198,16 +198,6 @@ cargo new --bin hello_world
 ---
 class: center, middle
 
-# Running the tests
-
-```bash
-cargo test
-```
-(built in from the get go)
-
----
-class: center, middle
-
 # Building the executable
 
 ```bash
@@ -260,165 +250,50 @@ fn main() {
 ]
 
 - `println!` prints a line - that's easy!
-- the `!` means that `println!` is a macro.
-
-(don't worry about macros)
+- Lines end in `;`
 
 ---
 class: center, middle
-#Let's write a test!
-
-???
-My least favourite thing about most tutorials is that they usually show you how
-to write a test a good twenty examples after you've wanted to write a test. So
-let's write a test right now.
-
----
-`hello_world/src/main.rs`
-
-```rust
-fn main() {
-     println!("Hello, world!");
-}
-
-#[test]
-fn test_gimmee_a_vector() {
-    assert_eq!(gimmee_a_vector(), vec![1, 2])
-}
-```
-- We can write tests in the same file as the code under test. Cool!
-
-(there is some nuance to this)
----
-`hello_world/src/main.rs`
-
-```rust
-fn main() {
-     println!("Hello, world!");
-}
-
-*#[test]
-fn test_gimmee_a_vector() {
-    assert_eq!(gimmee_a_vector(), vec![1, 2])
-}
-```
-
-- This is an annotation. Here it gives the a function the `test` attribute.
-
-(It's what makes it a test. Don't worry about it too much)
-
----
-`hello_world/src/main.rs`
-
-```rust
-fn main() {
-     println!("Hello, world!");
-}
-
-#[test]
-*fn test_gimmee_a_vector() {
-    assert_eq!(gimmee_a_vector(), vec![1, 2])
-}
-```
-
-- The function name is the name of a test
-- a vector (`Vec`) is like an `array` in Ruby
----
-`hello_world/src/main.rs`
-
-```rust
-fn main() {
-     println!("Hello, world!");
-}
-
-#[test]
-fn test_gimmee_a_vector() {
-*   assert_eq!(gimmee_a_vector(), vec![1, 2])
-}
-```
-
-- This macro is an assertion. `assert_eq!` panics* Rust if the two arguments are not equal.
-
-There's also an `assert!` macro that does the same if it's single argument is false.
-
-*'panic' is Rustacean for 'throwing an error'.
----
-`hello_world/src/main.rs`
-
-```rust
-fn main() {
-     println!("Hello, world!");
-}
-
-#[test]
-fn test_gimmee_a_vector() {
-*   assert_eq!(gimmee_a_vector(), vec![1, 2])
-}
-```
-
-- `vec![1, 2]` is another macro that builds a `Vec` with two elements, `1` and `2`.
-- It's like an array literal in Ruby - `[1, 2]`
-
-(arrays in Rust are more like arrays in C. Don't worry about this now)
+#Let's write some code
 ---
 class: center, middle
-#Let's pass the test!
+## Function that returns a Vector of two numbers, `1` and `2`
 ---
 `hello_world/src/main.rs`
 
 ```rust
-// ... the main function
 fn gimmee_a_vector() -> Vec<i32> {
     let mut my_vector = Vec::new();
     my_vector.push(1);
     my_vector.push(2);
     my_vector
 }
-// ... the test
 ```
 ---
 `hello_world/src/main.rs`
 
 ```rust
-*// ... the main function
-fn gimmee_a_vector() -> Vec<i32> {
-    let mut my_vector = Vec::new();
-    my_vector.push(1);
-    my_vector.push(2);
-    my_vector
-}
-// ... the test
-```
-
-- Comments start with `//`
----
-`hello_world/src/main.rs`
-
-```rust
-// ... the main function
 *fn gimmee_a_vector() -> Vec<i32> {
     let mut my_vector = Vec::new();
     my_vector.push(1);
     my_vector.push(2);
     my_vector
 }
-// ... the test
 ```
-
+- Ahh! Types!
 - Return type after the `->`
-- `Vec<i32>` - a vector of `i32`s - 32 bit integers.
+- `Vec` (Vector) in Rust, `Array` in Ruby
+- `Vec<i32>` - a vector of `i32`s - 32 bit Integers.
 ---
 `hello_world/src/main.rs`
 
 ```rust
-// ... the main function
 fn gimmee_a_vector() -> Vec<i32> {
 *   let mut my_vector = Vec::new();
     my_vector.push(1);
     my_vector.push(2);
     my_vector
 }
-// ... the test
 ```
 
 - `::` accesses functions in a module.
@@ -429,29 +304,25 @@ fn gimmee_a_vector() -> Vec<i32> {
 `hello_world/src/main.rs`
 
 ```rust
-// ... the main function
 fn gimmee_a_vector() -> Vec<i32> {
     let mut my_vector = Vec::new();
 *   my_vector.push(1);
 *   my_vector.push(2);
     my_vector
 }
-// ... the test
 ```
 
-- We use dot notation to `push()` elements into the ~array~ vector.
+- We use dot notation to `push()` elements into the vector.
 ---
 `hello_world/src/main.rs`
 
 ```rust
-// ... the main function
 fn gimmee_a_vector() -> Vec<i32> {
     let mut my_vector = Vec::new();
     my_vector.push(1);
     my_vector.push(2);
 *   my_vector
 }
-// ... the test
 ```
 
 - When a line does not end in a semi-colon, it is what the block (`{}`) evaluates
@@ -460,6 +331,9 @@ to.
 ---
 class: center, middle
 #Let's print out our vector
+---
+class: center, middle
+#By iterating over it
 ---
 `hello_world/src/main.rs`
 
@@ -495,11 +369,13 @@ fn print_vector(vector : Vec<i32>) {
 ```
 - `{}` is a placeholder in a Rust format string.
 ---
+class: center, middle
 # Let's print it out again!
 
 ???
 Now add an extra `print_vector(a_vector)` to the `main()`
 ---
+class: center, middle
 #UH OH!
 ---
 ```
@@ -517,31 +393,33 @@ error[E0382]: use of moved value: `a_vector`
 class: center, middle
 # Ownership
 ---
-class: middle
 # The Rules Of Ownership:
 --
 
 - Every variable has *ONE* and *ONLY ONE* owner
 --
 
-- When you call a function, you pass ownership
-
-???
-Rustaceans talk about 'consuming' the variable when this happens.
+- An owner is the scope - `{}`
 --
 
-- Hell, when you reassign you pass ownership
+- When you call a function, you move ownership
+--
 
-???
-Demonstrate reassignment borrow check error
+- Send a variable to a block, you move ownership
+--
+
+- When you reassign, you move ownership
+--
+
+- Basically, if you do anything, you move it
 --
 
 - When the owner dies, so does the variable
 ---
 class: center, middle
-# Solutions?
---
-
+# How do we work with this?
+---
+class: center, middle
 # Could just return the variable...
 ???
 - Demonstrate returning the vector from print_vector
@@ -558,7 +436,8 @@ fn print_vector(vector : Vec<i32>) -> Vec<i32> {
     return vector;
 }
 ```
-- iteration _also_ consumes the vector; `clone()` makes a copy.
+- iteration _also_ consumes the vector
+- `clone()` makes a copy.
 
 ---
 `hello_world/src/main.rs`
@@ -614,6 +493,10 @@ fn main() {
 ---
 class: center, middle
 
+# Better solution?
+---
+class: center, middle
+
 # Borrowing
 
 (or 'referencing')
@@ -626,9 +509,13 @@ Rewrite print_vector to use references
 
 # Two types of borrowing:
 
-- Immutable `&T`
-- Mutable `&mut T`
+--
+- Immutable - add an `&` (`&T`)
 
+--
+- Mutable - add an `&mut T` (`&mut T`)
+
+(kinda like we say with `let`)
 ---
 # The rules of borrowing
 
@@ -666,35 +553,10 @@ class: center, middle
 #1. No Garbage Collector
 
 ---
-## What is a garbage collector?
----
 class: center, middle
-
-# In the beginning...
-
-(a mass of undifferentiated memory locations)
-
+# What is a garbage collector?
 ---
-class: center, middle
-#THEN -
----
-class: center
-.center-image[ ![C](https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/The_C_Programming_Language_logo.svg/1200px-The_C_Programming_Language_logo.svg.png) ]
----
-class: center, middle
-#"Let there be STACK and HEAP Memory!"
----
-### THE STACK
-The memory your program is running in
-
-(it's like a scratch pad or a working area.)
-### THE HEAP
-The memory your program keeps long term data in
-
-(it's like a massive... heap of things. In memory.)
-
----
-# Ruby puts things on the heap
+# Ruby puts things into memory
 
 ```ruby
 def get_me_a_sandwich size
@@ -704,50 +566,39 @@ end
 
 sandwich = get_me_a_sandwich 5
 ```
-Sandwich making function!
+
+- Sandwich making function!
 ---
-# Ruby puts things on the heap
+# Ruby puts things into memory
 
 ```ruby
 def get_me_a_sandwich size
   size += 1
-* Sandwich.new size #The sandwich goes on the heap
+* Sandwich.new size
 end
 
 sandwich = get_me_a_sandwich 5
 ```
-The sandwich goes on the heap
+- The sandwich goes into memory
 ---
-# Ruby puts things on the heap
+# Ruby puts things into memory
 
 ```ruby
 def get_me_a_sandwich size
   size += 1
-  Sandwich.new size #The sandwich goes on the heap
+  Sandwich.new size
 end
 
-*sandwich = get_me_a_sandwich 5 #The very same sandwich
+*sandwich = get_me_a_sandwich 5
 ```
-The sandwich is handed over - a reference to the sandwich on the heap.
----
-# Ruby puts things on the heap
-
-```ruby
-def get_me_a_sandwich size
-  size += 1
-  Sandwich.new size #The sandwich goes on the heap
-end
-
-*sandwich = get_me_a_sandwich 5 #The very same sandwich
-```
-EVERYTHING in Ruby is a reference to something on the Heap
-(but everything 'happens' on the Stack)
-
+- The sandwich is handed over.
 ---
 class: center
 # This is a MASSIVE simplification
 
 (but we're talking about Rust, not Memory Management in Ruby)
+
+(ask me about Stack and Heap at the bar)
 ---
 # But ...
 ```ruby
@@ -761,7 +612,7 @@ def make_a_million_sandwiches_but_only_give_me_one
   Sandwich.new 6
 end
 ```
-Let's make a million sandwiches!
+- Let's make a million sandwiches!
 ---
 # But ...
 ```ruby
@@ -769,13 +620,13 @@ def make_a_million_sandwiches_but_only_give_me_one
   lots = 1_000_000
 
   lots.times do
-*   Sandwich.new 5 #Many sandwiches go on the heap
+*   Sandwich.new 5
   end
 
   Sandwich.new 6
 end
 ```
-Many sandwiches go on the heap
+- Make many sandwiches
 ---
 # But ...
 ```ruby
@@ -783,23 +634,23 @@ def make_a_million_sandwiches_but_only_give_me_one
   lots = 1_000_000
 
   lots.times do
-    Sandwich.new 5 #Many sandwiches go on the heap
+    Sandwich.new 5
   end
 
-* Sandwich.new 6 #We only use one
+* Sandwich.new 6
 end
 ```
-But we use only one of them
+- But we use only one of them
 ---
 class: center, middle
-#Q: What happens to the heap of one million sandwiches?
+#Q: How does Ruby get rid of the other sandwiches?
 ---
 class: center
 #A: GARBAGE COLLECTOR
 ![garbage collector](http://p.fod4.com/p/media/1d46854405/riBbiE0kRAi8bMgHlp1K_Freakout.gif)
 
 a process in the background that runs around tidying up after your program,
-working out which bits of heap memory you don't need anymore.
+working out which bits of memory you don't need anymore. It's really clever.
 ---
 class: center, middle
 #Q: Is there an alternative?
@@ -810,7 +661,6 @@ class: center, middle
 #A: DO IT YOURSELF!
 
 (like the good old days in C)
-
 ---
 ## Manual Memory Management (in C)
 ```c
@@ -823,20 +673,20 @@ class: center, middle
 ## Manual Memory Management (in C)
 ```c
   int *number;
-* number = (int *)malloc(sizeof(int)); // makes space on the heap for a number
+* number = (int *)malloc(sizeof(int));
   *number = 55;
   free(number);
 ```
-We make a bit of space on the heap just big enough to put a number in.
+- We get a space in memory to put a number in.
 ---
 ## Manual Memory Management (in C)
 ```c
   int *number;
-  number = (int *)malloc(sizeof(int)); // makes space on the heap for a number
+  number = (int *)malloc(sizeof(int));
 * *number = 55;
   free(number);
 ```
-We put a number in there.
+- We put a number in it.
 ---
 ## Manual Memory Management (in C)
 ```c
@@ -845,11 +695,11 @@ We put a number in there.
   *number = 55;
 * free(number);
 ```
-We free up that bit of memory - tidy up after ourselves, doing the job of the GC
+- We free up that bit of memory when we're done.
+- What the Garbage Collector does for us in Ruby
 ---
 #Q: What happens if we forget to free up the memory?
---
-
+---
 #A: Memory Leaks
 
 ![leak]( https://media.giphy.com/media/3o6Mbf0fbXwLFrbefK/giphy.gif)
@@ -878,22 +728,22 @@ We free up that bit of memory - tidy up after ourselves, doing the job of the GC
 - one rule, cheap to use, easy(ish) to remember
 
 ---
-
+#Where Variables are Freed
 ```rust
 fn main() {
   let a = 5;
     {
       let b = 10;
       // b is freed here!
-      // (and cannot be used afterwards)
+      // (and cannot be used after the `}`)
     }
   // a is freed here!
-  // (and cannot be used afterwards)
+  // (and cannot be used after the `}`)
 }
 ```
 
 ---
-# So..
+# So...
 
 - .green[\++] No GC == less overhead == faster code
 - .green[\++] No manual memory management == less bugs
@@ -911,6 +761,7 @@ class: center, middle
 
 - Borrowing rules avoid _some_ concurrency issues
 - i.e. prevents access of data for more than one writer
+- many more structures and techniques in Rust
 
 ---
 class: center, middle
@@ -918,13 +769,6 @@ class: center, middle
 ## Part III
 
 # Putting Rust into Ruby
-
----
-# Wouldn't it be nice to call Rust from Ruby?
-
---
-
-# YOU CAN!
 
 ---
 
@@ -1147,25 +991,25 @@ rust_fibonacci = Fiddle::Function.new(
 ---
 class: center, middle
 
-## Let's look at one I made earlier...
+## Let's look at that one I made earlier...
 
 ---
-
 class: center, middle
 # Summary
-
---
-
-## This is totally incomplete
-
+---
+class: center, middle
+# This is totally incomplete
 ---
 # What I've not talked about
+
+--
+- Tests! Built in, simple, effective!
 
 --
 - `Struct`s and `impl` - making objects and methods
 
 --
-- Lifetimes - advanced annotation to Borrows
+- Lifetimes - advanced annotation to a borrow
 
 --
 - Modules - how to organize Rust code
@@ -1181,17 +1025,30 @@ class: center, middle
 
 ---
 
-## See also
+## Link list example
 
 - Rust in General
+  - Installing [rustup](https://www.rustup.rs/)
   - [Rust standard library docs](https://doc.rust-lang.org/std/)
   - [Both _new_ and _old_ Rust Books](https://github.com/rust-lang/book)
+  - [#rust-beginners irc](https://client00.chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust-beginners) on irc.mozilla.org
+  - [Rust Blog](https://blog.rust-lang.org/)
+
+(irc is like Slack on hard mode)
 
 - Rust in Ruby
   - [FFI](https://github.com/ffi/ffi) - a different Ruby FFI library
   - [Helix](https://usehelix.com/) - opinionated Rust in Rails
   - [Yehuda Katz rewrites `String#blank?` in Rust](https://engineering.intercom.com/yehuda-on-rust-with-ruby/)
 
+---
+class: center, middle
+#Questions? Ask me at the bar.
+
+### (or @gypsydave5 on Twitter)
+---
+class: center, middle
+# Thank You!
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
     <script>
