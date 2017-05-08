@@ -1,7 +1,7 @@
 fn main() {
     let a_vector = gimmee_a_vector();
-    let a_vector = print_vector(a_vector);
-    print_vector(a_vector);
+    print_vector(&a_vector);
+    print_vector(&a_vector);
 }
 
 fn gimmee_a_vector() -> Vec<i32> {
@@ -11,11 +11,10 @@ fn gimmee_a_vector() -> Vec<i32> {
     my_vector
 }
 
-fn print_vector(vector : Vec<i32>) -> Vec<i32> {
-    for n in vector.clone() {
+fn print_vector(vector: &Vec<i32>) {
+    for n in vector {
         println!("{}", n);
     }
-    vector
 }
 
 #[test]
