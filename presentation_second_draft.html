@@ -70,7 +70,7 @@ of doing this.
 
 ## About Me (@gypsydave5)
 
-- Makers Academy August 2015
+- Makers Academy August 2014
 - Full Stack Developer Mergermarket ~2 years
 - Working with NodeJS, Go and *not enough* Ruby
 - Bit of a functional programming nut<br> .quiet[(but I don't bite)]
@@ -81,10 +81,12 @@ In fact, strongly believe that learning other languages helps learn all language
 "Travel broadens the mind"
 
 ---
+# Agenda
 
-1. Getting going with Rust
-2. What Ownership Get Us
-3. Putting Rust into Ruby
+### 0: Why Rust?
+### 1: Getting going with Rust
+### 2: What Ownership Get Us
+### 3: Putting Rust into Ruby
 
 ---
 
@@ -96,12 +98,13 @@ class: center, middle
 
 ##History
 
-- Started in 2006
+- Started in 2006 by Graydon Hoare
 - Mozilla sponsors in 2009
 - Pre-alpha compiler released in 2012
 - Rust 1.0: 2015
-- Currently at 1.17.0
-- New version every 6 weeks
+- _"Most loved language 2016, 2017"_
+
+(as voted for on Stack Overflow)
 
 ---
 # From the website
@@ -131,6 +134,32 @@ class: center, middle
 ---
 
 ![what does that mean?](https://media.giphy.com/media/pdQB12mDIHpeM/giphy.gif)
+
+---
+class: center, middle
+
+## Part 0
+
+# Why Rust?
+
+???
+Demonstrate speed difference
+Over 200 times faster than Ruby
+
+---
+class: center, middle
+
+# It's FAST
+
+---
+class: center, middle
+
+# REALLY, REALLY FAST
+
+---
+class: center, middle
+
+# Look, I'll show you...
 
 ---
 class: center, middle
@@ -598,7 +627,7 @@ Rewrite print_vector to use references
 # Two types of borrowing:
 
 - Immutable `&T`
-- Immutable `&mut T`
+- Mutable `&mut T`
 
 ---
 # The rules of borrowing
@@ -998,6 +1027,24 @@ pub extern "C" fn fibonacci(number: u32) -> u32 {
 - `"C"` makes it look like C
 
 ---
+#Fibonacci (Rust)
+`Cargo.toml`
+
+```toml
+[package]
+name = "fibonacci"
+version = "0.1.0"
+authors = ["David Wickes <dave.wickes@gmail.com>"]
+
+[lib]
+*crate_type = ["dylib"]
+
+[dependencies]
+```
+
+- Make sure we're compiling to dylib
+
+---
 class: center, middle
 
 # Building for release
@@ -1150,7 +1197,11 @@ class: center, middle
     <script>
       var slideshow = remark.create({
         highlightStyle: 'monokai',
-        highlightLines: true
+        highlightLines: true,
+        slideNumberFormat: '',
+        navigation: {
+          scroll: false,
+        }
       });
     </script>
   </body>
